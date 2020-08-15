@@ -160,4 +160,5 @@ def diary():
                             entries2=body2['entries'])
 
 
-app.run(host='localhost', port=5000, threaded=True)
+if __name__ == '__main__':
+    app.run(host='localhost', port=5000, threaded=True)
