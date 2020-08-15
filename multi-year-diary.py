@@ -1,6 +1,7 @@
 from datetime import date
 import json
 import os
+import sys
 import time
 
 from flask import Flask, request, render_template, make_response
@@ -8,8 +9,17 @@ from flask import Flask, request, render_template, make_response
 from facebook_archive import FacebookArchive, Post
 
 
-FACEBOOK_ARCHIVE_FILE = os.environ['FACEBOOK_ARCHIVE_FILE']
+FACEBOOK_ARCHIVE_FILE = None
 
+for d in os.scandir('.'):
+    if os.path.basename(d).startswith('facebook-') and os.path.basename(d).endswith('.zip'):
+        FACEBOOK_ARCHIVE_FILE = d.name
+        print('Facebook archive file "{}" found.'.format(FACEBOOK_ARCHIVE_FILE))
+        break
+
+if not FACEBOOK_ARCHIVE_FILE:
+    print('facebook-<user>.zip not found.')
+    sys.exit(1)
 
 app = Flask(__name__)
 
